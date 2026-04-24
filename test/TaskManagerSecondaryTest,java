@@ -1,0 +1,40 @@
+import static org.junit.Assert.*;
+import org.junit.Test;
+
+public class TaskManagerSecondaryTest {
+
+    @Test
+    public void testToString() {
+        TaskManager1L m = new TaskManager1L();
+
+        m.addTask("A");
+        m.addTask("B");
+
+        String result = m.toString();
+
+        assertTrue(result.contains("A"));
+        assertTrue(result.contains("B"));
+    }
+
+    @Test
+    public void testEqualsTrue() {
+        TaskManager1L m1 = new TaskManager1L();
+        TaskManager1L m2 = new TaskManager1L();
+
+        m1.addTask("A");
+        m2.addTask("A");
+
+        assertTrue(m1.equals(m2));
+    }
+
+    @Test
+    public void testEqualsFalse() {
+        TaskManager1L m1 = new TaskManager1L();
+        TaskManager1L m2 = new TaskManager1L();
+
+        m1.addTask("A");
+        m2.addTask("B");
+
+        assertFalse(m1.equals(m2));
+    }
+}

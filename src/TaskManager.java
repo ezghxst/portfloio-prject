@@ -1,4 +1,3 @@
-
 public interface TaskManager extends TaskManagerKernel {
 
     /**

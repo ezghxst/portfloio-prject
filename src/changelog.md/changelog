@@ -1,0 +1,102 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+
+---
+
+## 2026.04.19 - Part 2: Proof of Concept
+
+### Added
+- Created initial TaskManager proof-of-concept class
+- Implemented basic task storage using ArrayList
+- Added ability to:
+  - add tasks
+  - remove tasks by index
+  - mark tasks as completed
+  - display all tasks
+  - get total task count
+- Created inner Task class to store task data
+
+
+---
+
+## 2026.04.20 - Part 3: Interfaces
+
+### Added
+- Created `TaskManagerKernel` interface defining core functionality:
+  - addTask
+  - removeTask
+  - completeTask
+  - getTaskCount
+  - getTaskName
+  - isTaskCompleted
+- Created `TaskManager` interface extending kernel
+- Defined abstract methods:
+  - toString()
+  - equals(Object)
+
+### Changed
+- Separated implementation from specification using interface-based design
+
+
+---
+
+## 2026.04.22 - Part 4: Abstract Class
+
+### Added
+- Created `TaskManagerSecondary` abstract class
+- Implemented reusable methods:
+  - toString() (formatted task display)
+  - equals() (deep comparison of TaskManager objects)
+
+### Changed
+- Moved shared logic from implementation into abstract class to reduce duplication
+
+### Notes
+- This class provides secondary operations built on top of kernel methods
+- Prepares system for final kernel implementation in Part 5
+
+
+## 2026.04.23 - Part 5: Kernel Implementation
+
+### Added
+- Implemented `TaskManager1L` kernel class
+- Added full working data representation using ArrayList
+- Implemented all kernel methods:
+  - addTask
+  - removeTask
+  - completeTask
+  - getTaskCount
+  - getTaskName
+  - isTaskCompleted
+
+### Changed
+- Connected implementation to abstract class for inherited functionality
+
+### Notes
+- This is the main functional component of the system
+
+
+---
+
+## 2026.04.24 - Part 6: Finishing Touches
+
+### Added
+- Created JUnit test suite for kernel and abstract class
+- Added use-case demonstrations showing real-world usage
+- Added CHANGELOG and polished documentation
+- Organized project structure for submission
+
+### Changed
+- Improved code readability and consistency
+- Finalized component for submission
+
+### Notes
+- Project now includes:
+  - proof-of-concept
+  - interfaces
+  - abstract class
+  - kernel implementation
+  - tests
+  - use cases
