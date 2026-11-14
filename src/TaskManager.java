@@ -1,94 +1,28 @@
- import java.util.ArrayList;
+import components.standard.Standard;
 
 /**
- * A simple TaskManager proof-of-concept. proof of concept branch
+ * Enhanced interface for PlayerTracker.
+ * Provides additional functionality for analyzing player statistics.
  */
-public class TaskManager {
-
-    
-    private class Task {
-        String name;
-        boolean completed;
-
-        Task(String name) {
-            this.name = name;
-            this.completed = false;
-        }
-    }
-
-    private ArrayList<Task> tasks;
+public interface PlayerTracker extends PlayerTrackerKernel {
 
     /**
-     * Constructor
+     * Computes the average value of a given stat across all players.
+     * 
+     * @param stat the stat to average
+     * @return the average value of the stat
+     * @requires at least one player exists
+     * @ensures returns average of the stat across all players
      */
-    public TaskManager() {
-        this.tasks = new ArrayList<>();
-    }
+    double avgStat(String stat);
 
     /**
-     * Adds a new task.
+     * Finds the player with the highest value for a given stat.
+     * 
+     * @param stat the stat to check
+     * @return the name of the player with the highest value
+     * @requires at least one player exists
+     * @ensures returns player with maximum stat value
      */
-    public void addTask(String name) {
-        tasks.add(new Task(name));
-    }
-
-    
-    public void removeTask(int index) {
-        if (index >= 0 && index < tasks.size()) {
-            tasks.remove(index);
-        }
-    }
-
-    
-    public void completeTask(int index) {
-        if (index >= 0 && index < tasks.size()) {
-            tasks.get(index).completed = true;
-        }
-    }
-
-   
-    public void displayTasks() {
-        for (int i = 0; i < tasks.size(); i++) {
-            Task t = tasks.get(i);
-            String status = t.completed ? "[✔]" : "[ ]";
-            System.out.println(i + ": " + status + " " + t.name);
-        }
-    }
-
-    /**
-     * Returns number of tasks.
-     */
-    public int getTaskCount() {
-        return tasks.size();
-    }
-
-    /**
-     * Main method 
-     */
-    public static void main(String[] args) {
-        TaskManager manager = new TaskManager();
-
-       
-        manager.addTask("Finish homework");
-        manager.addTask("Go to the gym");
-        manager.addTask("Study for exam");
-
-        System.out.println("Initial Tasks:");
-        manager.displayTasks();
-
-       
-        manager.completeTask(0);
-
-        System.out.println("\nAfter completing first task:");
-        manager.displayTasks();
-
-        
-        manager.removeTask(1);
-
-        System.out.println("\nAfter removing second task:");
-        manager.displayTasks();
-
-        
-        System.out.println("\nTotal tasks: " + manager.getTaskCount());
-    }
+    String highestPlayer(String stat);
 }
