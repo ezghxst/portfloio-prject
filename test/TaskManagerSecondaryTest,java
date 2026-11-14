@@ -1,40 +1,58 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
-public class TaskManagerSecondaryTest {
+public class PlayerTrackerSecondaryTest {
 
     @Test
     public void testToString() {
-        TaskManager1L m = new TaskManager1L();
+        PlayerTracker t = new PlayerTracker1L();
+        t.addPlayer("LeBron James");
+        t.updateStat("LeBron James", "points", 25);
 
-        m.addTask("A");
-        m.addTask("B");
+        String result = t.toString();
 
-        String result = m.toString();
-
-        assertTrue(result.contains("A"));
-        assertTrue(result.contains("B"));
+        assertTrue(result.contains("LeBron James"));
+        assertTrue(result.contains("points=25"));
     }
 
     @Test
     public void testEqualsTrue() {
-        TaskManager1L m1 = new TaskManager1L();
-        TaskManager1L m2 = new TaskManager1L();
+        PlayerTracker t1 = new PlayerTracker1L();
+        PlayerTracker t2 = new PlayerTracker1L();
 
-        m1.addTask("A");
-        m2.addTask("A");
+        t1.addPlayer("Curry");
+        t1.updateStat("Curry", "points", 30);
 
-        assertTrue(m1.equals(m2));
+        t2.addPlayer("Curry");
+        t2.updateStat("Curry", "points", 30);
+
+        assertTrue(t1.equals(t2));
     }
 
     @Test
     public void testEqualsFalse() {
-        TaskManager1L m1 = new TaskManager1L();
-        TaskManager1L m2 = new TaskManager1L();
+        PlayerTracker t1 = new PlayerTracker1L();
+        PlayerTracker t2 = new PlayerTracker1L();
 
-        m1.addTask("A");
-        m2.addTask("B");
+        t1.addPlayer("Curry");
+        t1.updateStat("Curry", "points", 30);
 
-        assertFalse(m1.equals(m2));
+        t2.addPlayer("Curry");
+        t2.updateStat("Curry", "points", 25);
+
+        assertFalse(t1.equals(t2));
+    }
+
+    @Test
+    public void testHighestPlayer() {
+        PlayerTracker t = new PlayerTracker1L();
+        t.addPlayer("PlayerA");
+        t.addPlayer("PlayerB");
+        t.updateStat("PlayerA", "points", 15);
+        t.updateStat("PlayerB", "points", 28);
+
+        assertEquals("PlayerB", t.highestPlayer("points"));
     }
 }
