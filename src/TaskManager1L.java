@@ -1,61 +1,62 @@
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
- * CONVENTION:
- * - tasks is an ArrayList of Task objects.
- * - Each Task stores a name and completion status.
- * - The index represents task order.
- *
- * CORRESPONDENCE:
- * - tasks.get(i).name is the name of task i
- * - tasks.get(i).completed is whether task i is complete
+ * Kernel implementation of PlayerTracker using HashMap.
  */
-public class TaskManager1L extends TaskManagerSecondary {
+public class PlayerTracker1L extends PlayerTrackerSecondary {
 
-    private class Task {
-        String name;
-        boolean completed;
-
-        Task(String name) {
-            this.name = name;
-            this.completed = false;
-        }
-    }
-
-    private ArrayList<Task> tasks;
+    // Representation maps player name to (stat name, value)
+    private Map<String, Map<String, Integer>> rep;
 
     /**
-     * Constructor
+     * Creates a new empty PlayerTracker.
      */
-    public TaskManager1L() {
-        this.tasks = new ArrayList<>();
+    public PlayerTracker1L() {
+        this.rep = new HashMap<>();
     }
 
     @Override
-    public void addTask(String task) {
-        tasks.add(new Task(task));
+    public void addPlayer(String playerName) {
+        Map<String, Integer> stats = new HashMap<>();
+        stats.put("points", 0);
+        stats.put("rebounds", 0);
+        stats.put("assists", 0);
+        stats.put("steals", 0);
+        stats.put("blocks", 0);
+        this.rep.put(playerName, stats);
     }
 
     @Override
-   public void removeTask(int index) {
-    tasks.remove(index);
-}
-    @Override
-    public void completeTask(int index) {
-        tasks.get(index).completed = true;
+    public void updateStat(String playerName, String stat, int value) {
+        this.rep.get(playerName).put(stat, value);
     }
 
     @Override
-    public int getTaskCount() {
-        return tasks.size();
+    public int getStat(String playerName, String stat) {
+        return this.rep.get(playerName).get(stat);
     }
 
     @Override
-    public String getTaskName(int index) {
-        return tasks.get(index).name;
+    public Set<String> allPlayers() {
+        return this.rep.keySet();
     }
 
     @Override
-    public boolean isTaskCompleted(int index) {
-        return tasks.get(index).completed;
+    public void clear() {
+        this.rep.clear();
+    }
+
+    @Override
+    public PlayerTracker newInstance() {
+        return new PlayerTracker1L();
+    }
+
+    @Override
+    public void transferFrom(PlayerTracker source) {
+        PlayerTracker1L localSource = (PlayerTracker1L) source;
+        this.rep = localSource.rep;
+        localSource.rep = new HashMap<>();
     }
 }
