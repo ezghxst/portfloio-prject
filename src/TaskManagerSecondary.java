@@ -1,46 +1,67 @@
-public abstract class TaskManagerSecondary implements TaskManager {
+import java.util.Set;
+
+public abstract class PlayerTrackerSecondary implements PlayerTracker {
+
+    @Override
+    public double avgStat(String stat) {
+        int total = 0;
+        int count = 0;
+        for (String player : this.allPlayers()) {
+            total += this.getStat(player, stat);
+            count++;
+        }
+        double result = 0.0;
+        if (count > 0) {
+            result = (double) total / count;
+        }
+        return result;
+    }
+
+    @Override
+    public String highestPlayer(String stat) {
+        String bestPlayer = "";
+        int bestValue = -1;
+        for (String player : this.allPlayers()) {
+            int value = this.getStat(player, stat);
+            if (value > bestValue) {
+                bestValue = value;
+                bestPlayer = player;
+            }
+        }
+        return bestPlayer;
+    }
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        int count = this.getTaskCount();
-
-        for (int i = 0; i < count; i++) {
-            boolean completed = this.isTaskCompleted(i);
-            String name = this.getTaskName(i);
-
-            String status = completed ? "[✔]" : "[ ]";
-            result.append(i + ": " + status + " " + name + "\n");
+        String result = "";
+        for (String player : this.allPlayers()) {
+            result = result + player + ": " 
+                    + "points=" + this.getStat(player, "points") + ", "
+                    + "rebounds=" + this.getStat(player, "rebounds") + ", "
+                    + "assists=" + this.getStat(player, "assists") + ", "
+                    + "steals=" + this.getStat(player, "steals") + ", "
+                    + "blocks=" + this.getStat(player, "blocks") + "\n";
         }
-
-        return result.toString();
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-
-        if (!(obj instanceof TaskManager)) {
-            return false;
-        }
-
-        TaskManager other = (TaskManager) obj;
-
-        if (this.getTaskCount() != other.getTaskCount()) {
-            return false;
-        }
-
-        for (int i = 0; i < this.getTaskCount(); i++) {
-            if (this.isTaskCompleted(i) != other.isTaskCompleted(i)) {
-                return false;
-            }
-            if (!this.getTaskName(i).equals(other.getTaskName(i))) {
-                return false;
+        boolean result = false;
+        if (obj instanceof PlayerTracker) {
+            PlayerTracker other = (PlayerTracker) obj;
+            result = this.allPlayers().size() == other.allPlayers().size();
+            for (String player : this.allPlayers()) {
+                if (!other.allPlayers().contains(player)
+                        || this.getStat(player, "points") != other.getStat(player, "points")
+                        || this.getStat(player, "rebounds") != other.getStat(player, "rebounds")
+                        || this.getStat(player, "assists") != other.getStat(player, "assists")
+                        || this.getStat(player, "steals") != other.getStat(player, "steals")
+                        || this.getStat(player, "blocks") != other.getStat(player, "blocks")) {
+                    result = false;
+                }
             }
         }
-
-        return true;
+        return result;
     }
 }
