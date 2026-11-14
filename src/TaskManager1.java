@@ -1,109 +1,63 @@
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * A simple TaskManager proof-of-concept. proof of concept branch
+ * Kernel implementation of PlayerTracker using HashMap.
  */
-public class TaskManager {
+public class PlayerTracker1L extends PlayerTrackerSecondary {
 
-    private class Task {
-        String name;
-        boolean completed;
-
-        Task(String name) {
-            this.name = name;
-            this.completed = false;
-        }
-    }
-
-    private ArrayList<Task> tasks;
+    // Representation maps player name (stat then value)[cite: 2]
+    private Map<String, Map<String, Integer>> rep;
 
     /**
-     * Constructor
+     * Creates a new empty PlayerTracker.[cite: 2]
      */
-    public TaskManager() {
-        this.tasks = new ArrayList<>();
+    public PlayerTracker1L() {
+        this.rep = new HashMap<>();
     }
 
-    /**
-     * Adds a new task.
-     */
-    public void addTask(String name) {
-        tasks.add(new Task(name));
+    @Override
+    public void addPlayer(String playerName) {
+        Map<String, Integer> stats = new HashMap<>();
+        stats.put("points", 0);
+        stats.put("rebounds", 0);
+        stats.put("assists", 0);
+        stats.put("steals", 0);
+        stats.put("blocks", 0);
+        this.rep.put(playerName, stats);
     }
 
-    /**
-     * Removes a task by index.
-     */
-    public void removeTask(int index) {
-        if (index >= 0 && index < tasks.size()) {
-            tasks.remove(index);
-        }
+    @Override
+    public void updateStat(String playerName, String stat, int value) {
+        this.rep.get(playerName).put(stat, value);
     }
 
-    /**
-     * Marks a task as completed.
-     */
-    public void completeTask(int index) {
-        if (index >= 0 && index < tasks.size()) {
-            tasks.get(index).completed = true;
-        }
+    @Override
+    public int getStat(String playerName, String stat) {
+        return this.rep.get(playerName).get(stat);
     }
 
-    /**
-     * Displays all tasks.
-     */
-    public void displayTasks() {
-        for (int i = 0; i < tasks.size(); i++) {
-            Task t = tasks.get(i);
-            String status = t.completed ? "[✔]" : "[ ]";
-            System.out.println(i + ": " + status + " " + t.name);
-        }
+    @Override
+    public Set<String> allPlayers() {
+        return this.rep.keySet();
     }
 
-    /**
-     * Returns number of tasks.
-     */
-    public int getTaskCount() {
-        return tasks.size();
+    @Override
+    public void clear() {
+        this.rep.clear();
     }
 
-    /**
-     * Returns the name of a task.
-     */
-    public String getTaskName(int index) {
-        return tasks.get(index).name;
+    @Override
+    public PlayerTracker newInstance() {
+        return new PlayerTracker1L();
     }
 
-    /**
-     * Returns whether a task is completed.
-     */
-    public boolean isTaskCompleted(int index) {
-        return tasks.get(index).completed;
-    }
-
-    /**
-     * Main method
-     */
-    public static void main(String[] args) {
-        TaskManager manager = new TaskManager();
-
-        manager.addTask("Finish homework");
-        manager.addTask("Go to the gym");
-        manager.addTask("Study for exam");
-
-        System.out.println("Initial Tasks:");
-        manager.displayTasks();
-
-        manager.completeTask(0);
-
-        System.out.println("\nAfter completing first task:");
-        manager.displayTasks();
-
-        manager.removeTask(1);
-
-        System.out.println("\nAfter removing second task:");
-        manager.displayTasks();
-
-        System.out.println("\nTotal tasks: " + manager.getTaskCount());
+    @Override
+    public void transferFrom(PlayerTracker source) {
+        PlayerTracker1L localSource = (PlayerTracker1L) source;
+        this.rep = localSource.rep;
+        localSource.rep = new HashMap<>();
     }
 }
+```[cite: 2, 3]
