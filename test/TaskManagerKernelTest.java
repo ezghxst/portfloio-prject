@@ -1,47 +1,39 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
-public class TaskManagerKernelTest {
+public class PlayerTracker1LTest {
 
     @Test
-    public void testAddAndCount() {
-        TaskManager1L m = new TaskManager1L();
-
-        m.addTask("A");
-        m.addTask("B");
-
-        assertEquals(2, m.getTaskCount());
+    public void testAddPlayerAndGetStat() {
+        PlayerTracker t = new PlayerTracker1L();
+        t.addPlayer("LeBron James");
+        assertEquals(0, t.getStat("LeBron James", "points"));
+        assertEquals(0, t.getStat("LeBron James", "rebounds"));
     }
 
     @Test
-    public void testGetTaskName() {
-        TaskManager1L m = new TaskManager1L();
-
-        m.addTask("A");
-
-        assertEquals("A", m.getTaskName(0));
+    public void testUpdateStat() {
+        PlayerTracker t = new PlayerTracker1L();
+        t.addPlayer("Curry");
+        t.updateStat("Curry", "points", 30);
+        assertEquals(30, t.getStat("Curry", "points"));
     }
 
     @Test
-    public void testCompleteTask() {
-        TaskManager1L m = new TaskManager1L();
-
-        m.addTask("A");
-        m.completeTask(0);
-
-        assertTrue(m.isTaskCompleted(0));
+    public void testAllPlayers() {
+        PlayerTracker t = new PlayerTracker1L();
+        t.addPlayer("A");
+        t.addPlayer("B");
+        assertEquals(2, t.allPlayers().size());
     }
 
     @Test
-    public void testRemoveTask() {
-        TaskManager1L m = new TaskManager1L();
-
-        m.addTask("A");
-        m.addTask("B");
-
-        m.removeTask(0);
-
-        assertEquals(1, m.getTaskCount());
-        assertEquals("B", m.getTaskName(0));
+    public void testAvgStat() {
+        PlayerTracker t = new PlayerTracker1L();
+        t.addPlayer("A");
+        t.addPlayer("B");
+        t.updateStat("A", "points", 10);
+        t.updateStat("B", "points", 20);
+        assertEquals(15.0, t.avgStat("points"), 0.01);
     }
 }
