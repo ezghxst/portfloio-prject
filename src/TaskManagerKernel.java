@@ -1,26 +1,17 @@
 import components.standard.Standard;
+import java.util.Set;
 
 /**
- * Kernel interface for TaskManager.
+ * Kernel interface for PlayerTracker. Minimal functionality for managing player
+ * statistics.
  */
-public interface TaskManagerKernel extends Standard<TaskManager> {
+public interface PlayerTrackerKernel extends Standard<PlayerTrackerKernel> {
 
+    void addPlayer(String playerName);
 
-   
-    void addTask(String task);
+    void updateStat(String playerName, String stat, int value);
 
-   
-    void removeTask(int index);
+    int getStat(String playerName, String stat);
 
-   
-    void completeTask(int index);
-
-    
-    int getTaskCount();
-
-    
-    String getTaskName(int index);
-
-    
-    boolean isTaskCompleted(int index);
+    Set<String> allPlayers();
 }
